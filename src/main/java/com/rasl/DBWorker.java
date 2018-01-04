@@ -12,6 +12,10 @@ public class DBWorker {
 
     private Connection connection;
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     public DBWorker(){
         try{
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
