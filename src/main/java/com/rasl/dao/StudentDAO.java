@@ -22,6 +22,9 @@ public class StudentDAO implements DAO {
             while (resultSet.next()){
                 student = new Student();
                 student.setId(resultSet.getInt(1));
+                student.setName(resultSet.getString(2));
+                student.setAge(resultSet.getInt(3));
+                student.setGroupId(resultSet.getInt(4));
             }
         }catch (SQLException e){
             e.printStackTrace();
