@@ -1,4 +1,25 @@
 package com.rasl.dao;
 
-public class StudentDAO {
+import java.util.List;
+
+public class StudentDAO implements DAO {
+    public Object getOne(int id) {
+        return null;
+    }
+
+    public List<Object> getAll() {
+        return null;
+    }
+
+    public void update(int id, Object obj) {
+
+    }
+
+    public void create(Object obj) {
+
+    }
+
+    public void delete(int id) {
+
+    }
 }
