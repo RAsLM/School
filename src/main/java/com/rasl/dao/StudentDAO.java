@@ -17,8 +17,8 @@ public class StudentDAO implements DAO {
     public Object getOne(int id) {
         Student student = new Student() ;
         ResultSet resultSet;
-        try(Statement statement = DBWORKER.getConnection().createStatement()){
-            PreparedStatement preparedStatement = DBWORKER.getConnection().prepareCall("SELECT * FROM student WHERE student.id = ?");
+        try(PreparedStatement preparedStatement =
+                    DBWORKER.getConnection().prepareCall("SELECT * FROM student WHERE student.id = ?");){
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
