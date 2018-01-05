@@ -3,6 +3,7 @@ package com.rasl.dao;
 import com.rasl.DBWorker;
 import com.rasl.pojo.Student;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -14,22 +15,23 @@ public class StudentDAO implements DAO {
 
 
     public Object getOne(int id) {
-        Student student;
+        Student student = new Student() ;
         ResultSet resultSet;
-        String query = "SELECT * FROM student WHERE student.id = id";
         try(Statement statement = DBWORKER.getConnection().createStatement()){
-            resultSet = statement.executeQuery(query);
+            PreparedStatement preparedStatement = DBWORKER.getConnection().prepareCall("SELECT * FROM student WHERE student.id = ?");
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                student = new Student();
-                student.setId(resultSet.getInt(1));
-                student.setName(resultSet.getString(2));
-                student.setAge(resultSet.getInt(3));
-                student.setGroupId(resultSet.getInt(4));
+                student.setId(resultSet.getInt("id"));
+                student.setName(resultSet.getString("name"));
+                student.setAge(resultSet.getInt("age"));
+                student.setGroupId(resultSet.getInt("groupId"));
+                return student;
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return null;
+        return student;
     }
 
     public List<Object> getAll() {

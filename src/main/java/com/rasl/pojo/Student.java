@@ -54,4 +54,10 @@ public class Student {
     public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{id: " + id
+                + ", username: " + name + ", age: " + age + "}";
+    }
 }
