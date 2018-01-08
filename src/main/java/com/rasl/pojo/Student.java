@@ -58,6 +58,6 @@ public class Student {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{id: " + id
-                + ", username: " + name + ", age: " + age + ", groupId" + groupId +"}";
+                + ", username: " + name + ", age: " + age + ", groupId: " + groupId +"}";
     }
 }
