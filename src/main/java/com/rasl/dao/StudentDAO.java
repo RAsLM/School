@@ -19,7 +19,7 @@ public class StudentDAO implements DAO {
         Student student = new Student() ;
         ResultSet resultSet;
         try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall("SELECT * FROM student WHERE student.id = ?");){
+                    DBWORKER.getConnection().prepareCall("SELECT * FROM student WHERE id = ?");){
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
@@ -63,6 +63,14 @@ public class StudentDAO implements DAO {
     }
 
     public void delete(int id) {
-
+        Student student = new Student() ;
+        ResultSet resultSet;
+        try(PreparedStatement preparedStatement =
+                    DBWORKER.getConnection().prepareCall("DELETE FROM student WHERE id = ?");) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }
