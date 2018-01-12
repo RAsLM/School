@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         //test methods
-        studentDAO.delete(2);
+        //studentDAO.delete(2);
         System.out.println(studentDAO.getOne(2));
         System.out.println(studentDAO.getAll());
 

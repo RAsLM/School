@@ -1,5 +1,7 @@
 package com.rasl.dao;
 
+import com.rasl.pojo.Student;
+
 import java.util.List;
 
 public class StudentGroupDAO implements DAO {
@@ -7,7 +9,7 @@ public class StudentGroupDAO implements DAO {
         return null;
     }
 
-    public List<Object> getAll() {
+    public List<Student> getAll() {
         return null;
     }
 

@@ -1,5 +1,7 @@
 package com.rasl.dao;
 
+import com.rasl.pojo.Student;
+
 import java.util.List;
 
 public interface DAO {
