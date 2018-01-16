@@ -15,7 +15,7 @@ public class StudentDAO implements DAO {
     private static final String FIND_BY_ID = "SELECT * FROM student WHERE id = ?";
     private static final String FIND_ALL = "SELECT * FROM student";
     private static final String DELETE = "DELETE FROM student WHERE id=?";
-    private static final String INSERT = "INSERT INTO student (id, name, age, groupId) VALUES (NULL, ?, ?, ?, ?)";
+    private static final String INSERT = "INSERT INTO student (id, name, age, groupId) VALUES (?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE users SET name=?, age=?, groupId=? WHERE id=?";
 
 
@@ -58,11 +58,25 @@ public class StudentDAO implements DAO {
         return getAllStudent;
     }
 
-    public void update(int id, Object obj) {
+    public void update(Object obj) {
+
+        try(PreparedStatement preparedStatement =
+                    DBWORKER.getConnection().prepareCall(INSERT);){
+
+        }catch (SQLException e){
+
+        }
 
     }
 
     public void create(Object obj) {
+
+        try(PreparedStatement preparedStatement =
+                    DBWORKER.getConnection().prepareCall(UPDATE);){
+
+        }catch (SQLException e){
+
+        }
 
     }
 
