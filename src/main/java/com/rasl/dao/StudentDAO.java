@@ -81,8 +81,6 @@ public class StudentDAO implements DAO {
     }
 
     public void delete(int id) {
-        Student student = new Student() ;
-        ResultSet resultSet;
         try(PreparedStatement preparedStatement =
                     DBWORKER.getConnection().prepareCall(DELETE);) {
             preparedStatement.setInt(1, id);
