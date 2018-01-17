@@ -2,6 +2,7 @@ package com.rasl.dao;
 
 import com.rasl.DBWorker;
 import com.rasl.pojo.Student;
+import com.sun.org.apache.xpath.internal.SourceTree;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ public class StudentDAO implements DAO {
     private static final String FIND_BY_ID = "SELECT * FROM student WHERE id = ?";
     private static final String FIND_ALL = "SELECT * FROM student";
     private static final String DELETE = "DELETE FROM student WHERE id=?";
-    private static final String INSERT = "INSERT INTO student (id, name, age, groupId) VALUES (?, ?, ?, ?)";
+    private static final String INSERT = "INSERT INTO student (name, age, groupId) VALUES (?, ?, ?)";
     private static final String UPDATE = "UPDATE users SET name=?, age=?, groupId=? WHERE id=?";
 
 
@@ -40,12 +41,13 @@ public class StudentDAO implements DAO {
 
     public List<Object> getAll() {
         List<Object> getAllStudent = new ArrayList<>();
-        Student student = new Student() ;
+        Student student;
         ResultSet resultSet;
         try(PreparedStatement preparedStatement =
                     DBWORKER.getConnection().prepareCall(FIND_ALL);){
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
+                student = new Student();
                 student.setId(resultSet.getInt("id"));
                 student.setName(resultSet.getString("name"));
                 student.setAge(resultSet.getInt("age"));
@@ -59,23 +61,35 @@ public class StudentDAO implements DAO {
     }
 
     public void update(Object obj) {
-
+        Student student = (Student) obj;
         try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall(INSERT);){
+                    DBWORKER.getConnection().prepareCall(UPDATE);){
+            preparedStatement.setString(1,student.getName());
+            preparedStatement.setInt(2, student.getAge());
+            preparedStatement.setInt(3, student.getGroupId());
+            preparedStatement.setInt(4, student.getId());
+
+            preparedStatement.executeUpdate();
+
+            System.out.println("Данные ученика с id " + student.getId() + " были успешно обновлены: " + student.toString());
 
         }catch (SQLException e){
-
+            e.printStackTrace();
         }
 
     }
 
     public void create(Object obj) {
-
+        Student student = (Student) obj;
         try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall(UPDATE);){
-
+                    DBWORKER.getConnection().prepareCall(INSERT);){
+            preparedStatement.setString(1,student.getName());
+            preparedStatement.setInt(2, student.getAge());
+            preparedStatement.setInt(3, student.getGroupId());
+            preparedStatement.executeUpdate();
+            System.out.println("Ученик с именем: " + student.getName() + " добавлен!");
         }catch (SQLException e){
-
+            e.printStackTrace();
         }
 
     }
@@ -85,6 +99,8 @@ public class StudentDAO implements DAO {
                     DBWORKER.getConnection().prepareCall(DELETE);) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
+
+            System.out.println("Ученик с id " + id + " успешно удален!");
         } catch (SQLException e){
             e.printStackTrace();
         }

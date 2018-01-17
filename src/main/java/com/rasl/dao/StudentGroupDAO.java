@@ -9,11 +9,12 @@ public class StudentGroupDAO implements DAO {
         return null;
     }
 
-    public List<Student> getAll() {
+    public List<Object> getAll() {
         return null;
     }
 
-    public void update(int id, Object obj) {
+    @Override
+    public void update(Object obj) {
 
     }
 
