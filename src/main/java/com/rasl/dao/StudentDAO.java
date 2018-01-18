@@ -19,6 +19,39 @@ public class StudentDAO implements DAO {
     private static final String INSERT = "INSERT INTO student (name, age, groupId) VALUES (?, ?, ?)";
     private static final String UPDATE = "UPDATE users SET name=?, age=?, groupId=? WHERE id=?";
 
+    public void create(Object obj) {
+        Student student = (Student) obj;
+        try(PreparedStatement preparedStatement =
+                    DBWORKER.getConnection().prepareCall(INSERT);){
+            preparedStatement.setString(1,student.getName());
+            preparedStatement.setInt(2, student.getAge());
+            preparedStatement.setInt(3, student.getGroupId());
+            preparedStatement.executeUpdate();
+            System.out.println("Ученик с именем: " + student.getName() + " добавлен!");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void update(Object obj) {
+        Student student = (Student) obj;
+        try(PreparedStatement preparedStatement =
+                    DBWORKER.getConnection().prepareCall(UPDATE);){
+            preparedStatement.setString(1,student.getName());
+            preparedStatement.setInt(2, student.getAge());
+            preparedStatement.setInt(3, student.getGroupId());
+            preparedStatement.setInt(4, student.getId());
+
+            preparedStatement.executeUpdate();
+
+            System.out.println("Данные ученика с id " + student.getId() + " были успешно обновлены: " + student.toString());
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
 
     public Student getOne(int id) {
         Student student = new Student() ;
@@ -58,40 +91,6 @@ public class StudentDAO implements DAO {
             e.printStackTrace();
         }
         return getAllStudent;
-    }
-
-    public void update(Object obj) {
-        Student student = (Student) obj;
-        try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall(UPDATE);){
-            preparedStatement.setString(1,student.getName());
-            preparedStatement.setInt(2, student.getAge());
-            preparedStatement.setInt(3, student.getGroupId());
-            preparedStatement.setInt(4, student.getId());
-
-            preparedStatement.executeUpdate();
-
-            System.out.println("Данные ученика с id " + student.getId() + " были успешно обновлены: " + student.toString());
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-
-    }
-
-    public void create(Object obj) {
-        Student student = (Student) obj;
-        try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall(INSERT);){
-            preparedStatement.setString(1,student.getName());
-            preparedStatement.setInt(2, student.getAge());
-            preparedStatement.setInt(3, student.getGroupId());
-            preparedStatement.executeUpdate();
-            System.out.println("Ученик с именем: " + student.getName() + " добавлен!");
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-
     }
 
     public void delete(int id) {
