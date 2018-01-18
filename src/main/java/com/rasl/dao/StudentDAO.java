@@ -17,7 +17,7 @@ public class StudentDAO implements DAO {
     private static final String FIND_ALL = "SELECT * FROM student";
     private static final String DELETE = "DELETE FROM student WHERE id=?";
     private static final String INSERT = "INSERT INTO student (name, age, groupId) VALUES (?, ?, ?)";
-    private static final String UPDATE = "UPDATE users SET name=?, age=?, groupId=? WHERE id=?";
+    private static final String UPDATE = "UPDATE student SET name=?, age=?, groupId=? WHERE id=?";
 
     public void create(Object obj) {
         Student student = (Student) obj;
