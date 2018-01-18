@@ -4,6 +4,10 @@ public class StudentGroup {
     private int id;
     private String name;
 
+    public StudentGroup(){
+
+    }
+
     public StudentGroup(int id, String name) {
         this.id = id;
         this.name = name;

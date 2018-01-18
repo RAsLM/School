@@ -13,16 +13,11 @@ import java.util.List;
 public class StudentDAO implements DAO<Student> {
 
     private static DBWorker DBWORKER = new DBWorker();
-    private static final String FIND_BY_ID = "SELECT * FROM student WHERE id = ?";
-    private static final String FIND_ALL = "SELECT * FROM student";
-    private static final String DELETE = "DELETE FROM student WHERE id=?";
-    private static final String INSERT = "INSERT INTO student (name, age, groupId) VALUES (?, ?, ?)";
-    private static final String UPDATE = "UPDATE student SET name=?, age=?, groupId=? WHERE id=?";
 
     @Override
     public void create(Student student) {
         try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall(INSERT);){
+                    DBWORKER.getConnection().prepareCall("INSERT INTO student (name, age, groupId) VALUES (?, ?, ?)");){
             preparedStatement.setString(1,student.getName());
             preparedStatement.setInt(2, student.getAge());
             preparedStatement.setInt(3, student.getGroupId());
@@ -34,13 +29,14 @@ public class StudentDAO implements DAO<Student> {
 
     }
 
-    public void update(Student student) {
+    @Override
+    public void update(int id, Student student) {
         try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall(UPDATE);){
+                    DBWORKER.getConnection().prepareCall("UPDATE student SET name=?, age=?, groupId=? WHERE id=?");){
             preparedStatement.setString(1,student.getName());
             preparedStatement.setInt(2, student.getAge());
             preparedStatement.setInt(3, student.getGroupId());
-            preparedStatement.setInt(4, student.getId());
+            preparedStatement.setInt(4, id);
 
             preparedStatement.executeUpdate();
 
@@ -49,17 +45,17 @@ public class StudentDAO implements DAO<Student> {
         }catch (SQLException e){
             e.printStackTrace();
         }
-
     }
 
+    @Override
     public Student getOne(int id) {
         Student student = new Student() ;
         ResultSet resultSet;
         try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall(FIND_BY_ID);){
+                    DBWORKER.getConnection().prepareCall("SELECT * FROM student WHERE id = ?");){
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            if(resultSet.first()){
                 student.setId(resultSet.getInt("id"));
                 student.setName(resultSet.getString("name"));
                 student.setAge(resultSet.getInt("age"));
@@ -71,12 +67,13 @@ public class StudentDAO implements DAO<Student> {
         return student;
     }
 
+    @Override
     public List<Student> getAll() {
         List<Student> getAllStudent = new ArrayList<>();
         Student student;
         ResultSet resultSet;
         try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall(FIND_ALL);){
+                    DBWORKER.getConnection().prepareCall("SELECT * FROM student");){
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 student = new Student();
@@ -92,9 +89,10 @@ public class StudentDAO implements DAO<Student> {
         return getAllStudent;
     }
 
+    @Override
     public void delete(int id) {
         try(PreparedStatement preparedStatement =
-                    DBWORKER.getConnection().prepareCall(DELETE);) {
+                    DBWORKER.getConnection().prepareCall("DELETE FROM student WHERE id=?");) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
