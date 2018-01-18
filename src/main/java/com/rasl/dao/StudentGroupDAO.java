@@ -1,24 +1,22 @@
 package com.rasl.dao;
 
-import com.rasl.pojo.Student;
-
 import java.util.List;
 
-public class StudentGroupDAO implements DAO {
+public class StudentGroupDAO implements DAO<StudentGroupDAO> {
 
-    public void create(Object obj) {
-
-    }
-
-    public void update(Object obj) {
+    public void create(StudentGroupDAO StudentGroupDAO) {
 
     }
 
-    public Object getOne(int id) {
+    public void update(StudentGroupDAO StudentGroupDAO) {
+
+    }
+
+    public StudentGroupDAO getOne(int id) {
         return null;
     }
 
-    public List<Object> getAll() {
+    public List<StudentGroupDAO> getAll() {
         return null;
     }
 

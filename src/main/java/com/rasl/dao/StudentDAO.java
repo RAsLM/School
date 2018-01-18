@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDAO implements DAO {
+public class StudentDAO implements DAO<Student> {
 
     private static DBWorker DBWORKER = new DBWorker();
     private static final String FIND_BY_ID = "SELECT * FROM student WHERE id = ?";
@@ -19,8 +19,8 @@ public class StudentDAO implements DAO {
     private static final String INSERT = "INSERT INTO student (name, age, groupId) VALUES (?, ?, ?)";
     private static final String UPDATE = "UPDATE student SET name=?, age=?, groupId=? WHERE id=?";
 
-    public void create(Object obj) {
-        Student student = (Student) obj;
+    @Override
+    public void create(Student student) {
         try(PreparedStatement preparedStatement =
                     DBWORKER.getConnection().prepareCall(INSERT);){
             preparedStatement.setString(1,student.getName());
@@ -34,8 +34,7 @@ public class StudentDAO implements DAO {
 
     }
 
-    public void update(Object obj) {
-        Student student = (Student) obj;
+    public void update(Student student) {
         try(PreparedStatement preparedStatement =
                     DBWORKER.getConnection().prepareCall(UPDATE);){
             preparedStatement.setString(1,student.getName());
@@ -72,8 +71,8 @@ public class StudentDAO implements DAO {
         return student;
     }
 
-    public List<Object> getAll() {
-        List<Object> getAllStudent = new ArrayList<>();
+    public List<Student> getAll() {
+        List<Student> getAllStudent = new ArrayList<>();
         Student student;
         ResultSet resultSet;
         try(PreparedStatement preparedStatement =
