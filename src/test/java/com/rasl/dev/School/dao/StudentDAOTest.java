@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -26,6 +28,7 @@ public class StudentDAOTest {
 
     @Test
     public void update() {
+        System.out.println(getAllId());
     }
 
     @Test
@@ -36,6 +39,9 @@ public class StudentDAOTest {
 
     @Test
     public void getAll() {
+        int maxLines = getMaxLines();
+        int sizeArray = studentDAO.getAll().size();
+        assertEquals(maxLines, sizeArray);
     }
 
     @Test
@@ -78,6 +84,23 @@ public class StudentDAOTest {
                 System.out.println("Max lines - " + lines);
                 return lines;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private List<Integer> getAllId(){
+        ResultSet resultSet;
+        String sql = "SELECT * FROM student";
+        try (PreparedStatement preparedStatement =
+                     DBWorker.getInstance().getConnection().prepareCall(sql)) {
+            resultSet = preparedStatement.executeQuery();
+            List<Integer> getAllStudent = new ArrayList<>();
+            while (resultSet.next()) {
+                getAllStudent.add(resultSet.getInt("id"));
+            }
+            return getAllStudent;
         } catch (SQLException e) {
             e.printStackTrace();
         }

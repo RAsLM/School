@@ -72,13 +72,13 @@ public class StudentDAO implements DAO<Student> {
 
     @Override
     public List<Student> getAll() {
-        List<Student> getAllStudent = new ArrayList<>();
         Student student;
         ResultSet resultSet;
         String sql = "SELECT * FROM student";
         try (PreparedStatement preparedStatement =
                      DBWorker.getInstance().getConnection().prepareCall(sql)) {
             resultSet = preparedStatement.executeQuery();
+            List<Student> getAllStudent = new ArrayList<>();
             while (resultSet.next()) {
                 student = new Student();
                 student.setId(resultSet.getInt("id"));
@@ -87,10 +87,11 @@ public class StudentDAO implements DAO<Student> {
                 student.setGroupId(resultSet.getInt("groupId"));
                 getAllStudent.add(student);
             }
+            return getAllStudent;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return getAllStudent;
+        return null;
     }
 
     @Override
