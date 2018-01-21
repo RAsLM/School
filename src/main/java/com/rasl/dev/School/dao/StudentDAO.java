@@ -31,8 +31,8 @@ public class StudentDAO implements DAO<Student> {
     @Override
     public void update(int id, Student student) {
         String sql = "UPDATE student SET name=?, age=?, groupId=? WHERE id=?";
-        try (PreparedStatement preparedStatement =
-                     DBWorker.getInstance().getConnection().prepareCall(sql)) {
+        try (Connection connection = DBWorker.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
             preparedStatement.setString(1, student.getName());
             preparedStatement.setInt(2, student.getAge());
             preparedStatement.setInt(3, student.getGroupId());
@@ -51,8 +51,8 @@ public class StudentDAO implements DAO<Student> {
     public Student getOne(int id) {
         ResultSet resultSet;
         String sql = "SELECT * FROM student WHERE id = ?";
-        try(PreparedStatement preparedStatement =
-                    DBWorker.getInstance().getConnection().prepareCall(sql))  {
+        try(Connection connection = DBWorker.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareCall(sql))  {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.first()) {
@@ -74,8 +74,8 @@ public class StudentDAO implements DAO<Student> {
         Student student;
         ResultSet resultSet;
         String sql = "SELECT * FROM student";
-        try (PreparedStatement preparedStatement =
-                     DBWorker.getInstance().getConnection().prepareCall(sql)) {
+        try (Connection connection = DBWorker.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
             resultSet = preparedStatement.executeQuery();
             List<Student> getAllStudent = new ArrayList<>();
             while (resultSet.next()) {
@@ -96,8 +96,8 @@ public class StudentDAO implements DAO<Student> {
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM student WHERE id=?";
-        try (PreparedStatement preparedStatement =
-                     DBWorker.getInstance().getConnection().prepareCall(sql)) {
+        try (Connection connection = DBWorker.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
