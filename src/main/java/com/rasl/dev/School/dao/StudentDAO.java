@@ -50,9 +50,8 @@ public class StudentDAO implements DAO<Student> {
     public Student getOne(int id) {
         ResultSet resultSet;
         String sql = "SELECT * FROM student WHERE id = ?";
-        try  {
-            PreparedStatement preparedStatement =
-                    DBWorker.getInstance().getConnection().prepareCall(sql);
+        try(PreparedStatement preparedStatement =
+                    DBWorker.getInstance().getConnection().prepareCall(sql))  {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.first()) {
@@ -61,7 +60,6 @@ public class StudentDAO implements DAO<Student> {
                 student.setName(resultSet.getString("name"));
                 student.setAge(resultSet.getInt("age"));
                 student.setGroupId(resultSet.getInt("groupId"));
-                preparedStatement.close();
                 return student;
             }
         } catch (SQLException e) {
