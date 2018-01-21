@@ -28,7 +28,7 @@ public class StudentDAOTest {
 
     @Test
     public void update() {
-        System.out.println(getAllId());
+
     }
 
     @Test
@@ -39,18 +39,18 @@ public class StudentDAOTest {
 
     @Test
     public void getAll() {
-        int maxLines = getMaxLines();
+        int maxLines = getLinesCount();
         int sizeArray = studentDAO.getAll().size();
         assertEquals(maxLines, sizeArray);
     }
 
     @Test
     public void delete() {
-        int oldId = getMaxLines();
+        int oldId = getMaxId();
 
-        studentDAO.delete(8);
+        studentDAO.delete(getMaxId());
 
-        int maxId = getMaxLines();
+        int maxId = getMaxId();
 
         assertNotEquals(oldId,maxId);
 
@@ -73,7 +73,7 @@ public class StudentDAOTest {
         return null;
     }
 
-    private Integer getMaxLines(){
+    private Integer getLinesCount(){
         ResultSet resultSet;
         String sql = "SELECT count(*) from student";
         try (PreparedStatement preparedStatement =
@@ -92,7 +92,7 @@ public class StudentDAOTest {
 
     private List<Integer> getAllId(){
         ResultSet resultSet;
-        String sql = "SELECT * FROM student";
+        String sql = "SELECT id FROM student";
         try (PreparedStatement preparedStatement =
                      DBWorker.getInstance().getConnection().prepareCall(sql)) {
             resultSet = preparedStatement.executeQuery();

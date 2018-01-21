@@ -3,6 +3,7 @@ package com.rasl.dev.School.dao;
 import com.rasl.dev.School.DBWorker;
 import com.rasl.dev.School.pojo.Student;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +15,8 @@ public class StudentDAO implements DAO<Student> {
     @Override
     public void create(Student student) {
         String sql = "INSERT INTO student (name, age, groupId) VALUES (?, ?, ?)";
-        try (PreparedStatement preparedStatement =
-                     DBWorker.getInstance().getConnection().prepareCall(sql)) {
+        try (Connection connection = DBWorker.getInstance().getConnection();
+                PreparedStatement preparedStatement = connection.prepareCall(sql)) {
             preparedStatement.setString(1, student.getName());
             preparedStatement.setInt(2, student.getAge());
             preparedStatement.setInt(3, student.getGroupId());
