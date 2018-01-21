@@ -32,5 +32,4 @@ public class DBWorker{
         }
         return instance;
     }
-
 }
