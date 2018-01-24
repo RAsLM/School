@@ -54,3 +54,5 @@ DELETE
 
 /*SELECT student.name,student.age from student INNER JOIN groups g ON student.groupId = g.id
 WHERE g.name = 'A1';*/
+
+#UPDATE groups SET name = 'D4' WHERE name = 'B34';
