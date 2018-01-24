@@ -4,6 +4,7 @@ import com.rasl.dev.School.DBWorker;
 import com.rasl.dev.School.pojo.Student;
 import org.junit.Test;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +29,38 @@ public class StudentDAOTest {
 
     @Test
     public void update() {
+        String oldName = null;
+        String newName = null;
+        Student student = new Student("Pavel", 23, 2);
+        studentDAO.create(student);
+        String sql = "SELECT name FROM student WHERE id = ?";
+        ResultSet resultSet;
+        try (Connection connection = DBWorker.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
+            preparedStatement.setInt(1, getMaxId());
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.first()) {
+                oldName = resultSet.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Student studentUpdate = new Student("Vanya", 23, 2);
+        studentDAO.update(getMaxId(), studentUpdate);
+
+        try (Connection connection = DBWorker.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
+            preparedStatement.setInt(1, getMaxId());
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.first()) {
+                newName = resultSet.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertNotEquals(oldName, newName);
 
     }
 
@@ -56,7 +89,7 @@ public class StudentDAOTest {
 
     }
 
-    private Integer getMaxId(){
+    private int getMaxId(){
         ResultSet resultSet;
         String sql = "SELECT max(id) from student";
         try (PreparedStatement preparedStatement =
@@ -70,7 +103,7 @@ public class StudentDAOTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
     private Integer getLinesCount(){

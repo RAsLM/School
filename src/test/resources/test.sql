@@ -56,3 +56,5 @@ DELETE
 WHERE g.name = 'A1';*/
 
 #UPDATE groups SET name = 'D4' WHERE name = 'B34';
+
+SELECT name FROM student WHERE id = 22;
