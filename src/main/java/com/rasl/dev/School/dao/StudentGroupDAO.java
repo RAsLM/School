@@ -3,6 +3,7 @@ package com.rasl.dev.School.dao;
 import com.rasl.dev.School.pojo.StudentGroup;
 import com.rasl.dev.School.DBWorker;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,8 +14,9 @@ public class StudentGroupDAO implements DAO<StudentGroup> {
 
     @Override
     public void create(StudentGroup studentGroup) {
-        try(PreparedStatement preparedStatement =
-                    DBWorker.getInstance().getConnection().prepareCall("INSERT INTO groups (name) VALUES (?)")){
+        String sql = "INSERT INTO groups (name) VALUES (?)";
+        try(Connection connection = DBWorker.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareCall(sql)){
             preparedStatement.setString(1, studentGroup.getName());
             System.out.println("Группа с именем: " + studentGroup.getName() + " добавлена!");
         }catch (SQLException e){
@@ -40,20 +42,21 @@ public class StudentGroupDAO implements DAO<StudentGroup> {
 
     @Override
     public StudentGroup getOne(int id) {
-        StudentGroup studentGroup = new StudentGroup() ;
+        String sql = "SELECT * FROM groups WHERE id = ?";
         ResultSet resultSet;
-        try(PreparedStatement preparedStatement =
-                    DBWorker.getInstance().getConnection().prepareCall("SELECT * FROM groups WHERE id = ?")){
+        try(Connection connection = DBWorker.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareCall(sql)){
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.first()){
+                StudentGroup studentGroup = new StudentGroup();
                 studentGroup.setId(resultSet.getInt("id"));
                 studentGroup.setName(resultSet.getString("name"));
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return studentGroup;
+        return null;
     }
 
     @Override

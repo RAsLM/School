@@ -28,7 +28,7 @@ public class StudentDAOTest {
     }
 
     @Test
-    public void update() {
+    public void updateTest() {
         String oldName = null;
         String newName = null;
         Student student = new Student("Pavel", 23, 2);
@@ -65,20 +65,20 @@ public class StudentDAOTest {
     }
 
     @Test
-    public void getOne() {
+    public void getOneTest() {
         Student student = studentDAO.getOne(getMaxId());
         assertNotNull(student);
     }
 
     @Test
-    public void getAll() {
+    public void getAllTest() {
         int maxLines = getLinesCount();
         int sizeArray = studentDAO.getAll().size();
         assertEquals(maxLines, sizeArray);
     }
 
     @Test
-    public void delete() {
+    public void deleteTest() {
         int oldId = getMaxId();
 
         studentDAO.delete(getMaxId());

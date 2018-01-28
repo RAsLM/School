@@ -36,7 +36,7 @@ SELECT
 
 UPDATE
   переименовать группу В34 в D4
-Перевести всех студентов которые учатся в группе А1 в группу С3
+Перевести всех студентов которые учатся в группе А1 в группу С2
 
 
 DELETE
@@ -52,9 +52,13 @@ DELETE
   ('Alexander', '21', '2'), ('Sergey', '22', '2'), ('Misha', '23', '3'), ('Vasya', '27', '3');*/
 #SELECT * FROM student;
 
-/*SELECT student.name,student.age from student INNER JOIN groups g ON student.groupId = g.id
+/*SELECT student.name,student.age, groupId from student INNER JOIN groups g ON student.groupId = g.id
 WHERE g.name = 'A1';*/
 
 #UPDATE groups SET name = 'D4' WHERE name = 'B34';
 
-SELECT name FROM student WHERE id = 22;
+#UPDATE student INNER JOIN groups g ON student.groupId = g.id SET groupId = g.id WHERE g.name = 'A1';
+
+#DELETE FROM groups WHERE name = 'D4';
+
+#SELECT name FROM student WHERE id = 22;

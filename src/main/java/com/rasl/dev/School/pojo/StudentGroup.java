@@ -8,6 +8,10 @@ public class StudentGroup {
 
     }
 
+    public StudentGroup(String name){
+        this.name = name;
+    }
+
     public StudentGroup(int id, String name) {
         this.id = id;
         this.name = name;
