@@ -26,8 +26,9 @@ public class StudentGroupDAO implements DAO<StudentGroup> {
 
     @Override
     public void update(int id, StudentGroup studentGroup) {
-        try(PreparedStatement preparedStatement =
-                    DBWorker.getInstance().getConnection().prepareCall("UPDATE groups SET name=? WHERE id=?")){
+        String sql = "UPDATE groups SET name=? WHERE id=?";
+        try(Connection connection = DBWorker.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareCall(sql)){
             preparedStatement.setString(1,studentGroup.getName());
             preparedStatement.setInt(2, id);
 
@@ -64,8 +65,9 @@ public class StudentGroupDAO implements DAO<StudentGroup> {
         List<StudentGroup> getAllStudentGroups = new ArrayList<>();
         StudentGroup studentGroup;
         ResultSet resultSet;
-        try(PreparedStatement preparedStatement =
-                    DBWorker.getInstance().getConnection().prepareCall("SELECT * FROM student")){
+        String sql = "SELECT * FROM student";
+        try(Connection connection = DBWorker.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareCall(sql)){
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 studentGroup = new StudentGroup();
@@ -81,8 +83,9 @@ public class StudentGroupDAO implements DAO<StudentGroup> {
 
     @Override
     public void delete(int id) {
-        try(PreparedStatement preparedStatement =
-                    DBWorker.getInstance().getConnection().prepareCall("DELETE FROM groups WHERE id=?")) {
+        String sql = "DELETE FROM groups WHERE id=?";
+        try(Connection connection = DBWorker.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareCall(sql)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 

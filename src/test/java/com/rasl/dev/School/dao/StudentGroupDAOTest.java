@@ -1,10 +1,10 @@
 package com.rasl.dev.School.dao;
 
 import com.rasl.dev.School.DBWorker;
-import com.rasl.dev.School.pojo.Student;
 import com.rasl.dev.School.pojo.StudentGroup;
 import org.junit.Test;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +20,6 @@ public class StudentGroupDAOTest {
         StudentGroup studentGroup = new StudentGroup("S1");
         int oldId = getMaxId();
         studentGroupDAO.create(studentGroup);
-
         int newId = getMaxId();
         assertNotNull(studentGroupDAO.getOne(getMaxId()));
         assertNotEquals(oldId, newId);
@@ -45,8 +44,8 @@ public class StudentGroupDAOTest {
     private int getMaxId(){
         ResultSet resultSet;
         String sql = "SELECT max(id) from groups";
-        try (PreparedStatement preparedStatement =
-                     DBWorker.getInstance().getConnection().prepareCall(sql)) {
+        try (Connection connection = DBWorker.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.first()) {
                 int id =  resultSet.getInt(1);
