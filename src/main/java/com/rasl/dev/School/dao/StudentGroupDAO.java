@@ -18,6 +18,7 @@ public class StudentGroupDAO implements DAO<StudentGroup> {
         try(Connection connection = DBWorker.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareCall(sql)){
             preparedStatement.setString(1, studentGroup.getName());
+            preparedStatement.executeUpdate();
             System.out.println("Группа с именем: " + studentGroup.getName() + " добавлена!");
         }catch (SQLException e){
             e.printStackTrace();
